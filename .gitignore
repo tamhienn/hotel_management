@@ -1,0 +1,13 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+*.user
+
+# React / Node
+node_modules/
+dist/
+.env
+
+# Khác
+*.log
