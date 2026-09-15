@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BE.Model;
@@ -8,9 +9,9 @@ namespace BE.Model;
 
         public string FullName { get; set; } = string.Empty;
 
-        public string Email { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
 
-        public string PasswordHash { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public string Role { get; set; } = string.Empty;
 

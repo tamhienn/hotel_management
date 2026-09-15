@@ -51,9 +51,7 @@ namespace BE.Controller
         // PUT: api/room/1
         // Cập nhật Room
         [HttpPut("{id}")]
-        public async Task<ActionResult<RoomModel>> UpdateAsync(
-            long id,
-            RoomModel room)
+        public async Task<ActionResult<RoomModel>> UpdateAsync(long id,RoomModel room)
         {
             var updatedRoom = await service.UpdateAsync(id, room);
 

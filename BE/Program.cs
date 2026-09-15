@@ -18,6 +18,12 @@ builder.Services.AddScoped<RoomRepository>();
 // Đăng ký Service room
 builder.Services.AddScoped<RoomService>();
 
+// Đăng ký Repository user
+builder.Services.AddScoped<UserRepository>();
+
+// Đăng ký Service user
+builder.Services.AddScoped<UserService>();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
