@@ -12,17 +12,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-// Đăng ký Repository
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+// Đăng ký Repository room
+builder.Services.AddScoped<RoomRepository>();
 
-// Đăng ký Service
-builder.Services.AddScoped<IRoomService, RoomService>();
-
-// Đăng ký Repository
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-// Đăng ký Service
-builder.Services.AddScoped<IUserService, UserService>();
+// Đăng ký Service room
+builder.Services.AddScoped<RoomService>();
 
 var app = builder.Build();
 

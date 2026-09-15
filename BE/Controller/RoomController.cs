@@ -8,9 +8,9 @@ namespace BE.Controller
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
-        private readonly IRoomService service;
+        private readonly RoomService service;
 
-        public RoomController(IRoomService service)
+        public RoomController(RoomService service)
         {
             this.service = service;
         }
