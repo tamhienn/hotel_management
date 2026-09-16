@@ -7,6 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+// CORS cho phép React FE gọi API
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFE", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
@@ -26,7 +38,10 @@ builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+// Cho phép FE gọi API
+app.UseCors("AllowFE");
+
+// app.UseHttpsRedirection();
 
 app.MapControllers();
 
