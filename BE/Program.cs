@@ -1,10 +1,11 @@
-﻿using BE.Data;
-using BE.Repository;
-using BE.Service;
+﻿using BE.Config;
+using BE.Repositories;
+using BE.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Đăng ký Controllers
 builder.Services.AddControllers();
 
 // CORS cho phép React FE gọi API
@@ -19,28 +20,26 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+// Đăng ký DbContext (DatabaseConfig thay cho AppDbContext cũ)
+builder.Services.AddDbContext<DatabaseConfig>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-// Đăng ký Repository room
-builder.Services.AddScoped<RoomRepository>();
+// Đăng ký Repository & Service cho Room
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IRoomService, RoomService>();
 
-// Đăng ký Service room
-builder.Services.AddScoped<RoomService>();
-
-// Đăng ký Repository user
-builder.Services.AddScoped<UserRepository>();
-
-// Đăng ký Service user
-builder.Services.AddScoped<UserService>();
+// Đăng ký Repository & Service cho User
+//builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
 // Cho phép FE gọi API
 app.UseCors("AllowFE");
 
+// Nếu muốn bật HTTPS thì mở dòng dưới
 // app.UseHttpsRedirection();
 
 app.MapControllers();
