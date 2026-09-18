@@ -1,4 +1,4 @@
-using BE.Config;
+﻿using BE.Config;
 using BE.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,8 +6,11 @@ namespace BE.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        // truong luu doi tuong DatabaseConfig de thao tac vs db
         private readonly DatabaseConfig _dbContext;
 
+        // nhận 1 kiểu dl Databaseconfig thông qua tham số dbcontext để tham chiếu đến object Databaseconfig
+        // sau đó gán vào field để các method trong UserRepository có thể thao tác vs db
         public UserRepository(DatabaseConfig dbContext)
         {
             _dbContext = dbContext;
@@ -17,6 +20,8 @@ namespace BE.Repositories
 
         public async Task<User?> GetByIdAsync(long id) => await _dbContext.Users.FindAsync(id);
 
+        // khởi tạo method nhận kiểu User(từ service) thông qua user 
+        // truy cập db để lưu user 
         public async Task<User> CreateAsync(User user)
         {
             _dbContext.Users.Add(user);

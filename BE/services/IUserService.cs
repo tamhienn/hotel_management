@@ -6,8 +6,11 @@ namespace BE.Services
     {
         Task<List<UserDto>> GetAllAsync();
         Task<UserDto?> GetByIdAsync(long id);
-        Task<UserDto> CreateAsync(UserDto user);
-        Task<UserDto?> UpdateAsync(long id, UserDto user);
+
+        Task<UserDto> CreateAsync(CreateUserDto dto);
+
+        Task<UserDto?> UpdateAsync(long id, UpdateUserDto dto);
+
         Task<bool> DeleteAsync(long id);
     }
 }

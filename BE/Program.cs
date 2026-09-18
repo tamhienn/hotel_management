@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Đăng ký DbContext (DatabaseConfig thay cho AppDbContext cũ)
+// Đăng ký DbContext 
 builder.Services.AddDbContext<DatabaseConfig>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")

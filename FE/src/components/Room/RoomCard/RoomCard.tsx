@@ -1,56 +1,27 @@
+import type { Room } from "../../../type/room";
 
-type Room = {
-    id: number;
-    name: string;
-    type: string;
-    price: number;
-    description: string;
-    status: string;
-};
-
+// _room chính là prop mà HomePage truyền xuống cho RoomCard.
+// _room property nhan data co typedata la Room
 type RoomCardProps = {
-    room: Room;
+  _room: Room;
 };
 
-function RoomCard({ room }: RoomCardProps) {
-    return (
-        <div className="room-card">
+// Component hiển thị một phòng
+function RoomCard(_props: RoomCardProps) {
+  // Lấy room từ props
+  const room = _props._room;
 
-            {/* Hình ảnh phòng */}
-            <div className="room-image">
-                <span>Room Image</span>
-            </div>
+  return (
+    <div>
+      <h2>{room.name}</h2>
 
-            {/* Thông tin phòng */}
-            <div className="room-info">
+      <p>Giá: {room.price} VNĐ</p>
 
-                <h2>{room.name}</h2>
+      <p>mô tả : {room.description}</p>
 
-                <p className="room-type">
-                    {room.type}
-                </p>
-
-                <p className="room-description">
-                    {room.description}
-                </p>
-
-                {/* Giá + trạng thái */}
-                <div className="room-bottom">
-
-                    <span className="room-price">
-                        {room.price.toLocaleString("vi-VN")} VNĐ
-                    </span>
-
-                    <span className="room-status">
-                        {room.status}
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-    );
+      <p>Trạng thái: {room.status}</p>
+    </div>
+  );
 }
 
 export default RoomCard;

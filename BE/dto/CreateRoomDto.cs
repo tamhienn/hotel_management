@@ -1,13 +1,14 @@
-namespace BE.Models
+﻿// dùng để nhận dữ liệu từ client khi TẠO phòng mới
+// không có Id vì Id do DB tự sinh, client không được tự set
+
+namespace BE.Dto
 {
-    public class RoomModel
+    public class CreateRoomDto
     {
-        public long Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
     }
 }

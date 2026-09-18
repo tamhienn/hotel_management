@@ -1,3 +1,5 @@
+﻿//  thực thể ánh xạ tới bảng rooms trong db
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

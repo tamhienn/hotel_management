@@ -1,9 +1,10 @@
-using BE.Dto;
+﻿using BE.Dto;
 using BE.Entities;
 using BE.Repositories;
 
 namespace BE.Services
 {
+
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
@@ -13,49 +14,54 @@ namespace BE.Services
             _repository = repository;
         }
 
+        // ---- mapping tái sử dụng: viết 1 lần, gọi lại ở mọi method bên dưới ----
+        // Chuyển đổi đối tượng User Entity sang UserDto
+        private static UserDto ToDto(User u) => new()
+        {
+            Id = u.Id,
+            Username = u.Username,
+            FullName = u.FullName,
+            Email = u.Email
+        };
+
+
         public async Task<List<UserDto>> GetAllAsync()
         {
             var users = await _repository.GetAllAsync();
-            return users.Select(u => new UserDto
-            {
-                Id = u.Id,
-                Username = u.Username,
-                FullName = u.FullName,
-                Email = u.Email
-            }).ToList();
+            return users.Select(ToDto).ToList();
         }
 
         public async Task<UserDto?> GetByIdAsync(long id)
         {
             var u = await _repository.GetByIdAsync(id);
-            if (u == null) return null;
-            return new UserDto { Id = u.Id, Username = u.Username, FullName = u.FullName, Email = u.Email };
+            return u == null ? null : ToDto(u);
         }
 
-        public async Task<UserDto> CreateAsync(UserDto userDto)
+        // Chuyển dữ liệu từ CreateUserDto sang User Entity để lưu vào database
+        public async Task<UserDto> CreateAsync(CreateUserDto dto)
         {
             var user = new User
             {
-                Username = userDto.Username,
-                FullName = userDto.FullName,
-                Email = userDto.Email
+                Username = dto.Username,
+                FullName = dto.FullName,
+                Email = dto.Email
             };
+
             var created = await _repository.CreateAsync(user);
-            return new UserDto { Id = created.Id, Username = created.Username, FullName = created.FullName, Email = created.Email };
+            return ToDto(created);
         }
 
-        public async Task<UserDto?> UpdateAsync(long id, UserDto userDto)
+        public async Task<UserDto?> UpdateAsync(long id, UpdateUserDto dto)
         {
             var user = new User
             {
-                Id = id,
-                Username = userDto.Username,
-                FullName = userDto.FullName,
-                Email = userDto.Email
+                Username = dto.Username,
+                FullName = dto.FullName,
+                Email = dto.Email
             };
+
             var updated = await _repository.UpdateAsync(id, user);
-            if (updated == null) return null;
-            return new UserDto { Id = updated.Id, Username = updated.Username, FullName = updated.FullName, Email = updated.Email };
+            return updated == null ? null : ToDto(updated);
         }
 
         public async Task<bool> DeleteAsync(long id) => await _repository.DeleteAsync(id);

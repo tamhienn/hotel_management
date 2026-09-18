@@ -1,55 +1,46 @@
+
+// useState → lưu và cập nhật dữ liệu.
+// useEffect → thực hiện công việc sau khi component render.
 import { useEffect, useState } from "react";
 import { getRooms } from "../../services/roomService";
 import RoomCard from "../../components/Room/RoomCard/RoomCard";
-
-type Room = {
-    id: number;
-    name: string;
-    type: string;
-    price: number;
-    description: string;
-    status: string;
-};
+import type { Room } from "../../type/room";
 
 function HomePage() {
-    const [rooms, setRooms] = useState<Room[]>([]);
-    const [error, setError] = useState("");
+  // Danh sách phòng
+  // tạo một state có kiểu danh sách Room, ban đầu là mảng rỗng. 
+  // rooms là giá trị hiện tại, còn setRooms là hàm dùng để cập nhật giá trị của rooms
+  const [rooms, setRooms] = useState<Room[]>([]);
 
-    useEffect(() => {
-        async function loadRooms() {
-            try {
-                const data = await getRooms();
 
-                console.log("Dữ liệu nhận được:", data);
+    // useEffect sẽ chạy đoạn code bên trong
+    // sau khi HomePage render
+  useEffect(() => {
+    async function loadRooms() {
+      // Gọi Backend để lấy danh sách phòng
+      const data = await getRooms();
 
-                setRooms(data);
-            } catch (error) {
-                console.error(error);
-                setError("Không thể tải danh sách phòng");
-            }
-        }
+      // Lưu dữ liệu vào rooms
+      setRooms(data);
+    }
+    // goi ham de code ben trong thuc su chay
+    // neu khong co thi chi moi tao ham,chua chay
+    loadRooms();
+  }, []);
 
-        loadRooms();
-    }, []);
+  return (
+    <div>
+      <h1>Danh sách phòng</h1>
 
-    return (
-        <div>
-            <h1>Danh sách phòng</h1>
-
-            {error && <p>{error}</p>}
-
-            {rooms.length === 0 && !error && (
-                <p>Đang tải dữ liệu...</p>
-            )}
-
-            {rooms.map((room) => (
-                <RoomCard
-                    key={room.id}
-                    room={room}
-                />
-            ))}
-        </div>
-    );
+      {/* Hiển thị tất cả phòng */}
+      // map() dung de duyet phan tu va tao ra gia tri tuong ung
+      {rooms.map((room) => (
+      
+      // key la ID nhan dien phan tu trong list
+        <RoomCard key={room.id} _room={room} />
+      ))}
+    </div>
+  );
 }
 
 export default HomePage;

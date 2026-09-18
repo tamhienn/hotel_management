@@ -1,10 +1,9 @@
-﻿// đóng gói dữ liệu để trao đổi giữa client - server thông qua 
+﻿// dùng để nhận dữ liệu từ client khi CẬP NHẬT user
 
 namespace BE.Dto
 {
-    public class UserDto
+    public class UpdateUserDto
     {
-        public long Id { get; set; }
         public string Username { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-using BE.Dto;
+﻿using BE.Dto;
 using BE.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,8 +18,8 @@ namespace BE.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetAllAsync()
         {
-            var users = await _service.GetAllAsync();
-            return Ok(users);
+            var user = await _service.GetAllAsync();
+            return Ok(user);
         }
 
         [HttpGet("{id}")]
@@ -31,14 +31,14 @@ namespace BE.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateAsync(UserDto user)
+        public async Task<ActionResult<UserDto>> CreateAsync(CreateUserDto user) // đổi từ UserDto
         {
             var newUser = await _service.CreateAsync(user);
             return CreatedAtAction(nameof(GetByIdAsync), new { id = newUser.Id }, newUser);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserDto>> UpdateAsync(long id, UserDto user)
+        public async Task<ActionResult<UserDto>> UpdateAsync(long id, UpdateUserDto user) // đổi từ UserDto
         {
             var updatedUser = await _service.UpdateAsync(id, user);
             if (updatedUser == null) return NotFound();
