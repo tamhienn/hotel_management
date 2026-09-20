@@ -1,18 +1,17 @@
-﻿using BE.Entities;
+using BE.Entities;
 
 namespace BE.Repositories
 {
-    // các interface định nghĩa chức năng cần thực hiện
     public interface IUserRepository
     {
         Task<List<User>> GetAllAsync();
 
-        Task<User?> GetByIdAsync(long id);
+        Task<User?> GetByIdAsync(int id);
 
         Task<User> CreateAsync(User user);
 
-        Task<User?> UpdateAsync(long id, User user);
+        Task<User?> UpdateAsync(int id, User user);
 
-        Task<bool> DeleteAsync(long id);
+        Task<bool> DeleteAsync(int id);
     }
 }

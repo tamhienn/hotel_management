@@ -1,15 +1,17 @@
-﻿using BE.Entities;
+using BE.Entities;
 
 namespace BE.Repositories
 {
     public interface IRoomRepository
     {
-        // các interface định nghĩa chức năng
         Task<List<Room>> GetAllAsync();
-        Task<Room?> GetByIdAsync(long id);
+
+        Task<Room?> GetByIdAsync(int id); 
+
         Task<Room> CreateAsync(Room room);
-        Task<Room?> UpdateAsync(long id, Room room);
-        Task<bool> DeleteAsync(long id);
+
+        Task<Room?> UpdateAsync(int id, Room room);
+
+        Task<bool> DeleteAsync(int id);
     }
 }
- 

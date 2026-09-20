@@ -1,4 +1,4 @@
-﻿using BE.Dto;
+using BE.Dto;
 using BE.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,38 +18,49 @@ namespace BE.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetAllAsync()
         {
-            var user = await _service.GetAllAsync();
-            return Ok(user);
+            return Ok(await _service.GetAllAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetByIdAsync(long id)
+        public async Task<ActionResult<UserDto>> GetByIdAsync(int id)
         {
             var user = await _service.GetByIdAsync(id);
-            if (user == null) return NotFound();
+
+            if (user == null)
+                return NotFound();
+
             return Ok(user);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateAsync(CreateUserDto user) // đổi từ UserDto
+        public async Task<ActionResult<UserDto>> CreateAsync(CreateUserDto user)
         {
             var newUser = await _service.CreateAsync(user);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = newUser.Id }, newUser);
+
+            return Ok(newUser);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserDto>> UpdateAsync(long id, UpdateUserDto user) // đổi từ UserDto
+        public async Task<ActionResult<UserDto>> UpdateAsync(
+            int id,
+            UpdateUserDto user)
         {
             var updatedUser = await _service.UpdateAsync(id, user);
-            if (updatedUser == null) return NotFound();
+
+            if (updatedUser == null)
+                return NotFound();
+
             return Ok(updatedUser);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var result = await _service.DeleteAsync(id);
-            if (!result) return NotFound();
+            var deleted = await _service.DeleteAsync(id);
+
+            if (!deleted)
+                return NotFound();
+
             return NoContent();
         }
     }

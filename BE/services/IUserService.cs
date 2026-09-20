@@ -5,12 +5,13 @@ namespace BE.Services
     public interface IUserService
     {
         Task<List<UserDto>> GetAllAsync();
-        Task<UserDto?> GetByIdAsync(long id);
+
+        Task<UserDto?> GetByIdAsync(int id);
 
         Task<UserDto> CreateAsync(CreateUserDto dto);
 
-        Task<UserDto?> UpdateAsync(long id, UpdateUserDto dto);
+        Task<UserDto?> UpdateAsync(int id, UpdateUserDto dto);
 
-        Task<bool> DeleteAsync(long id);
+        Task<bool> DeleteAsync(int id);
     }
 }

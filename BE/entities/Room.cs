@@ -1,29 +1,36 @@
-﻿//  thực thể ánh xạ tới bảng rooms trong db
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BE.Entities
 {
-    [Table("Rooms")]
+    [Table("rooms")]
     public class Room
     {
         [Key]
-        public long Id { get; set; }
+        [Column("id")]
+        public int Id { get; set; }
 
-        [Required]
-        public string Name { get; set; } = string.Empty;
+        [Column("room_type_id")]
+        public int RoomTypeId { get; set; }
 
-        public string Type { get; set; } = string.Empty;
+        [Column("room_number")]
+        public string RoomNumber { get; set; } = string.Empty;
 
-        public decimal Price { get; set; }
+        [Column("floor")]
+        public int Floor { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        [Column("status")]
+        public string Status { get; set; } = "available";
 
-        public string Status { get; set; } = string.Empty;
+        [Column("description")]
+        public string? Description { get; set; }
 
         [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set; }
+
+        public RoomType? RoomType { get; set; }
     }
 }
- 
