@@ -18,14 +18,16 @@ namespace BE.Services
             return new UserDto
             {
                 Id = user.Id,
-                Username = user.Username,
                 FullName = user.FullName,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Role = user.Role,
                 Status = user.Status,
                 Address = user.Address,
                 ImageUrl = user.ImageUrl,
+                EmailVerifiedAt = user.EmailVerifiedAt,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
             };
@@ -49,15 +51,17 @@ namespace BE.Services
         {
             var user = new User
             {
-                Username = dto.Username,
                 FullName = dto.FullName,
+                DateOfBirth = dto.DateOfBirth,
+                Gender = dto.Gender,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 PasswordHash = dto.PasswordHash,
                 Role = dto.Role,
                 Status = dto.Status,
                 Address = dto.Address,
-                ImageUrl = dto.ImageUrl
+                ImageUrl = dto.ImageUrl,
+                EmailVerifiedAt = dto.EmailVerifiedAt
             };
 
             var created = await _repository.CreateAsync(user);
@@ -69,15 +73,17 @@ namespace BE.Services
         {
             var user = new User
             {
-                Username = dto.Username,
                 FullName = dto.FullName,
+                DateOfBirth = dto.DateOfBirth,
+                Gender = dto.Gender,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 PasswordHash = dto.PasswordHash,
                 Role = dto.Role,
                 Status = dto.Status,
                 Address = dto.Address,
-                ImageUrl = dto.ImageUrl
+                ImageUrl = dto.ImageUrl,
+                EmailVerifiedAt = dto.EmailVerifiedAt
             };
 
             var updated = await _repository.UpdateAsync(id, user);

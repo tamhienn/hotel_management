@@ -10,11 +10,14 @@ namespace BE.Entities
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("username")]
-        public string Username { get; set; } = string.Empty;
-
         [Column("full_name")]
         public string FullName { get; set; } = string.Empty;
+
+        [Column("date_of_birth")]
+        public DateTime? DateOfBirth { get; set; }
+
+        [Column("gender")]
+        public string? Gender { get; set; }
 
         [Column("email")]
         public string Email { get; set; } = string.Empty;
@@ -36,6 +39,9 @@ namespace BE.Entities
 
         [Column("image_url")]
         public string? ImageUrl { get; set; }
+
+        [Column("email_verified_at")]
+        public DateTime? EmailVerifiedAt { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

@@ -7,9 +7,11 @@ namespace BE.Dto
     {
         public int Id { get; set; }
 
-        public string Username { get; set; } = string.Empty;
-
         public string FullName { get; set; } = string.Empty;
+
+        public DateTime? DateOfBirth { get; set; }
+
+        public string? Gender { get; set; }
 
         public string Email { get; set; } = string.Empty;
 
@@ -22,6 +24,8 @@ namespace BE.Dto
         public string? Address { get; set; }
 
         public string? ImageUrl { get; set; }
+
+        public DateTime? EmailVerifiedAt { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

@@ -42,8 +42,9 @@ namespace BE.Repositories
             if (existingUser == null)
                 return null;
 
-            existingUser.Username = user.Username;
             existingUser.FullName = user.FullName;
+            existingUser.DateOfBirth = user.DateOfBirth;
+            existingUser.Gender = user.Gender;
             existingUser.Email = user.Email;
             existingUser.PhoneNumber = user.PhoneNumber;
             existingUser.PasswordHash = user.PasswordHash;
@@ -51,6 +52,7 @@ namespace BE.Repositories
             existingUser.Status = user.Status;
             existingUser.Address = user.Address;
             existingUser.ImageUrl = user.ImageUrl;
+            existingUser.EmailVerifiedAt = user.EmailVerifiedAt;
 
             existingUser.UpdatedAt = DateTime.UtcNow;
 
