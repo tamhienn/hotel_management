@@ -254,9 +254,4 @@ Database này tập trung vào hệ thống đặt phòng khách sạn với cá
 - thanh toán
 - đánh giá khách hàng
 
-Nếu cần, có thể tiếp tục tạo thêm file mô tả chi tiết theo từng module như:
 
-- `user_module.md`
-- `booking_module.md`
-- `payment_module.md`
-- `room_module.md`
