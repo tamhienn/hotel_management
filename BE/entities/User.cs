@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BE.Entities
+namespace BE.entities
 {
     [Table("users")]
     public class User
@@ -10,38 +10,20 @@ namespace BE.Entities
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("full_name")]
-        public string FullName { get; set; } = string.Empty;
-
-        [Column("date_of_birth")]
-        public DateTime? DateOfBirth { get; set; }
-
-        [Column("gender")]
-        public string? Gender { get; set; }
+        [Column("fullname")]
+        public string Fullname { get; set; } = string.Empty;
 
         [Column("email")]
         public string Email { get; set; } = string.Empty;
 
+        [Column("password")]
+        public string Password { get; set; } = string.Empty;
+
         [Column("phone_number")]
         public string? PhoneNumber { get; set; }
 
-        [Column("password_hash")]
-        public string PasswordHash { get; set; } = string.Empty;
-
         [Column("role")]
-        public string Role { get; set; } = "user";
-
-        [Column("status")]
-        public string Status { get; set; } = "active";
-
-        [Column("address")]
-        public string? Address { get; set; }
-
-        [Column("image_url")]
-        public string? ImageUrl { get; set; }
-
-        [Column("email_verified_at")]
-        public DateTime? EmailVerifiedAt { get; set; }
+        public string Role { get; set; } = string.Empty;
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

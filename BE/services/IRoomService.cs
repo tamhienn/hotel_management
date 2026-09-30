@@ -1,17 +1,14 @@
-using BE.Dto;
-
-namespace BE.Services
+using BE.dtos.Room;
+namespace BE.services
 {
     public interface IRoomService
     {
-        Task<List<RoomDto>> GetAllAsync();
 
-        Task<RoomDto?> GetByIdAsync(int id);
+        Task<List<RoomResponseDto>> GetAllRoom();
+        Task<RoomResponseDto?> GetRoomById(int Id);
+        Task<RoomResponseDto> CreateRoom(CreateRoomDto room);
+        Task<RoomResponseDto?> UpdateRoom(int id, UpdateRoomDto room);
+        Task<bool> DeleteRoom(int id);
 
-        Task<RoomDto> CreateAsync(CreateRoomDto dto);
-
-        Task<RoomDto?> UpdateAsync(int id, UpdateRoomDto dto);
-
-        Task<bool> DeleteAsync(int id);
     }
 }

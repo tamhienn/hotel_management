@@ -1,74 +1,93 @@
-using BE.Config;
-using BE.Entities;
+﻿using BE.configs;
+using BE.entities;
+using BE.repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BE.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
-        private readonly DatabaseConfig _dbContext;
+        private readonly DatabaseConfig _dbcontext;
 
-        public RoomRepository(DatabaseConfig dbContext)
+        public RoomRepository(DatabaseConfig dbcontext)
         {
-            _dbContext = dbContext;
+            _dbcontext = dbcontext;
         }
 
-        public async Task<List<Room>> GetAllAsync()
+        // Lấy tất cả phòng
+        public async Task<List<Room>> GetAllRoom()
         {
-            return await _dbContext.Rooms
+            return await _dbcontext.Rooms
+
                 .Include(r => r.RoomType)
+
+                // tat ghi nho trang thai
+                .AsNoTracking()
+
+                // lay du lieu bang danh sach
                 .ToListAsync();
         }
 
-        public async Task<Room?> GetByIdAsync(int id)
+        // Lấy phòng theo ID
+        public async Task<Room?> GetRoomById(int id)
         {
-            return await _dbContext.Rooms
+            return await _dbcontext.Rooms
                 .Include(r => r.RoomType)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<Room> CreateAsync(Room room)
+        // Thêm phòng
+        public async Task<Room> CreateRoom(Room room)
         {
-            room.CreatedAt = DateTime.UtcNow;
-            room.UpdatedAt = DateTime.UtcNow;
+            _dbcontext.Rooms.Add(room);
 
-            _dbContext.Rooms.Add(room);
+            await _dbcontext.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
-
-            return room;
+            return await _dbcontext.Rooms
+                .Include(r => r.RoomType)
+                .AsNoTracking()
+                .FirstAsync(r => r.Id == room.Id);
         }
 
-        public async Task<Room?> UpdateAsync(int id, Room room)
+        public async Task<Room?> UpdateRoom(int id, Room room)
         {
-            var existingRoom = await _dbContext.Rooms.FindAsync(id);
+            var existingRoom = await _dbcontext.Rooms
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (existingRoom == null)
+            {
                 return null;
+            }
 
-            existingRoom.RoomTypeId = room.RoomTypeId;
             existingRoom.RoomNumber = room.RoomNumber;
+            existingRoom.RoomTypeId = room.RoomTypeId;
             existingRoom.Floor = room.Floor;
             existingRoom.Status = room.Status;
-            existingRoom.Description = room.Description;
+            existingRoom.UpdatedAt = DateTime.Now;
 
-            existingRoom.UpdatedAt = DateTime.UtcNow;
+            await _dbcontext.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
-
-            return existingRoom;
+            return await _dbcontext.Rooms
+                .Include(r => r.RoomType)
+                .AsNoTracking()
+                .FirstAsync(r => r.Id == id);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        // Xóa phòng
+        public async Task<bool> DeleteRoom(int id)  
         {
-            var room = await _dbContext.Rooms.FindAsync(id);
+            var room = await _dbcontext.Rooms
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (room == null)
+            {
                 return false;
+            }
 
-            _dbContext.Rooms.Remove(room);
+            _dbcontext.Rooms.Remove(room);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbcontext.SaveChangesAsync();
 
             return true;
         }

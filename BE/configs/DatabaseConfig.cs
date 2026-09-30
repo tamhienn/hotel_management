@@ -1,7 +1,7 @@
-using BE.Entities;
+﻿using BE.entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BE.Config
+namespace BE.configs
 {
     public class DatabaseConfig : DbContext
     {
@@ -10,22 +10,35 @@ namespace BE.Config
         {
         }
 
+        // ==============================
+        // DbSet
+        // ==============================
+
         public DbSet<Room> Rooms { get; set; }
+
         public DbSet<RoomType> RoomTypes { get; set; }
+
         public DbSet<User> Users { get; set; }
+
+
+        // ==============================
+        // Cấu hình Entity
+        // ==============================
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Room>().ToTable("rooms");
-            modelBuilder.Entity<RoomType>().ToTable("room_types");
-            modelBuilder.Entity<User>().ToTable("users");
+            // ==============================
+            // Quan hệ RoomType - Room
+            // RoomType 1 ---- N Room
+            // ==============================
 
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.RoomType)
                 .WithMany(rt => rt.Rooms)
-                .HasForeignKey(r => r.RoomTypeId);
+                .HasForeignKey(r => r.RoomTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,17 +1,17 @@
-using BE.Entities;
+using BE.entities;
 
-namespace BE.Repositories
+namespace BE.repositories
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllAsync();
+        public Task<List<User>> GetAllUser();
 
-        Task<User?> GetByIdAsync(int id);
+        public Task<User?> GetUserById(int id);
 
-        Task<User> CreateAsync(User user);
+        public Task<User> CreateUser(User user);
 
-        Task<User?> UpdateAsync(int id, User user);
+        public Task<User?> UpdateUser(int id, User user);
 
-        Task<bool> DeleteAsync(int id);
+        public Task<bool> DeleteUser(int id);
     }
 }

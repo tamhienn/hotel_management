@@ -1,77 +1,81 @@
-using BE.Config;
-using BE.Entities;
+using BE.configs;
+using BE.entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BE.Repositories
+namespace BE.repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DatabaseConfig _dbContext;
 
+        private readonly DatabaseConfig _dbcontext;
         public UserRepository(DatabaseConfig dbContext)
         {
-            _dbContext = dbContext;
+            _dbcontext = dbContext;
         }
 
-        public async Task<List<User>> GetAllAsync()
+        public async Task<List<User>> GetAllUser()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbcontext.Users
+                // tat ghi nho trang thai
+                .AsNoTracking()
+
+                // lay du lieu dang danh sach
+                .ToListAsync();
+
+
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<User?> GetUserById(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbcontext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<User> CreateAsync(User user)
+        public async Task<User> CreateUser(User user)
         {
-            user.CreatedAt = DateTime.UtcNow;
-            user.UpdatedAt = DateTime.UtcNow;
-
-            _dbContext.Users.Add(user);
-
-            await _dbContext.SaveChangesAsync();
-
-            return user;
+            _dbcontext.Users.Add(user);
+            await _dbcontext.SaveChangesAsync();
+            return await _dbcontext.Users
+                .AsNoTracking()
+                .FirstAsync(r => r.Id == user.Id);
+            
         }
 
-        public async Task<User?> UpdateAsync(int id, User user)
+        public async Task<User?> UpdateUser(int id, User user)
         {
-            var existingUser = await _dbContext.Users.FindAsync(id);
+            var existingUser = await _dbcontext.Users
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (existingUser == null)
+            {
                 return null;
+            }
 
-            existingUser.FullName = user.FullName;
-            existingUser.DateOfBirth = user.DateOfBirth;
-            existingUser.Gender = user.Gender;
+            existingUser.Fullname = user.Fullname;
             existingUser.Email = user.Email;
             existingUser.PhoneNumber = user.PhoneNumber;
-            existingUser.PasswordHash = user.PasswordHash;
-            existingUser.Role = user.Role;
-            existingUser.Status = user.Status;
-            existingUser.Address = user.Address;
-            existingUser.ImageUrl = user.ImageUrl;
-            existingUser.EmailVerifiedAt = user.EmailVerifiedAt;
+            existingUser.UpdatedAt = DateTime.Now;
 
-            existingUser.UpdatedAt = DateTime.UtcNow;
+            await _dbcontext.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
-
-            return existingUser;
+            return await _dbcontext.Users
+                .AsNoTracking()
+                .FirstAsync(r => r.Id == id);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteUser(int id)
         {
-            var user = await _dbContext.Users.FindAsync(id);
+            var rs = await _dbcontext.Users
+                .FirstOrDefaultAsync(r => r.Id == id);
 
-            if (user == null)
+            if(rs == null)
+            {
                 return false;
+            }
 
-            _dbContext.Users.Remove(user);
-
-            await _dbContext.SaveChangesAsync();
-
+            _dbcontext.Users.Remove(rs);
+            await _dbcontext.SaveChangesAsync();
             return true;
         }
     }

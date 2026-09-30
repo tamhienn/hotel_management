@@ -1,11 +1,11 @@
-using BE.Dto;
-using BE.Services;
+using BE.services;
 using Microsoft.AspNetCore.Mvc;
+using BE.dtos.Room;
 
-namespace BE.Controllers
+namespace BE.controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[Controller]")]
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _service;
@@ -15,18 +15,20 @@ namespace BE.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<RoomDto>>> GetAllAsync()
-        {
-            var rooms = await _service.GetAllAsync();
 
-            return Ok(rooms);
+        [HttpGet]
+        public async Task<ActionResult<List<RoomResponseDto>>> GetAllRoom()
+        {
+            var room = await _service.GetAllRoom();
+
+            return Ok(room);
         }
 
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<RoomDto>> GetByIdAsync(int id)
+        public async Task<ActionResult<RoomResponseDto>> GetRoomById(int id)
         {
-            var room = await _service.GetByIdAsync(id);
+            var room = await _service.GetRoomById(id);
 
             if (room == null)
                 return NotFound();
@@ -34,36 +36,37 @@ namespace BE.Controllers
             return Ok(room);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<RoomDto>> CreateAsync(CreateRoomDto room)
-        {
-            var newRoom = await _service.CreateAsync(room);
 
-            return Ok(newRoom);
+        [HttpPost]
+        public async Task<ActionResult<RoomResponseDto>> CreateRoom(CreateRoomDto dto)
+        {
+            var newroom = await _service.CreateRoom(dto);
+
+            return Ok(newroom);
         }
+
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<RoomDto>> UpdateAsync(
-            int id,
-            UpdateRoomDto room)
+        public async Task<ActionResult<RoomResponseDto>> UpdateRoom(int id, UpdateRoomDto dto)
         {
-            var updatedRoom = await _service.UpdateAsync(id, room);
+            var updateroom = await _service.UpdateRoom(id, dto);
 
-            if (updatedRoom == null)
+            if (updateroom == null)
                 return NotFound();
 
-            return Ok(updatedRoom);
+            return Ok(updateroom);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var result = await _service.DeleteAsync(id);
 
-            if (!result)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRoom(int id)
+        {
+            var deleteroom = await _service.DeleteRoom(id);
+
+            if (!deleteroom)
                 return NotFound();
 
-            return NoContent();
+            return Ok(deleteroom);
         }
     }
 }

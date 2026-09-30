@@ -1,11 +1,13 @@
-using BE.Dto;
-using BE.Entities;
-using BE.Repositories;
+using BE.dtos.User;
+using BE.repositories;
+using BE.entities;
+using System.Linq;
 
-namespace BE.Services
+namespace BE.services
 {
     public class UserService : IUserService
     {
+
         private readonly IUserRepository _repository;
 
         public UserService(IUserRepository repository)
@@ -13,87 +15,62 @@ namespace BE.Services
             _repository = repository;
         }
 
-        private static UserDto ToDto(User user)
+        private static UserResponseDto toDto(User user) => new()
         {
-            return new UserDto
+            Fullname = user.Fullname,
+            Email    = user.Email,
+            PhoneNumber = user.PhoneNumber
+
+        };
+
+        public async Task<List<UserResponseDto>> GetAllUser()
+        {
+            var rs = await _repository.GetAllUser();
+
+            return rs.Select(toDto).ToList();
+        }
+
+        public async Task<UserResponseDto?> GetUserById(int id)
+        {
+            var rs = await _repository.GetUserById(id);
+            return rs == null ? null : toDto(rs);
+        }
+        public async Task<UserResponseDto> CreateUser(CreateUserDto user)
+        {
+            var users = new User
             {
-                Id = user.Id,
-                FullName = user.FullName,
-                DateOfBirth = user.DateOfBirth,
-                Gender = user.Gender,
+                Fullname = user.Fullname,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+
+            };
+            var rs = await _repository.CreateUser(users);
+            return toDto(rs);
+        }
+
+        public async Task<UserResponseDto?> UpdateUser(int id, UpdateUserDto user)
+        {
+            var users = new User
+            {
+                Fullname = user.Fullname,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Role = user.Role,
-                Status = user.Status,
-                Address = user.Address,
-                ImageUrl = user.ImageUrl,
-                EmailVerifiedAt = user.EmailVerifiedAt,
-                CreatedAt = user.CreatedAt,
-                UpdatedAt = user.UpdatedAt
-            };
-        }
-
-        public async Task<List<UserDto>> GetAllAsync()
-        {
-            var users = await _repository.GetAllAsync();
-
-            return users.Select(ToDto).ToList();
-        }
-
-        public async Task<UserDto?> GetByIdAsync(int id)
-        {
-            var user = await _repository.GetByIdAsync(id);
-
-            return user == null ? null : ToDto(user);
-        }
-
-        public async Task<UserDto> CreateAsync(CreateUserDto dto)
-        {
-            var user = new User
-            {
-                FullName = dto.FullName,
-                DateOfBirth = dto.DateOfBirth,
-                Gender = dto.Gender,
-                Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber,
-                PasswordHash = dto.PasswordHash,
-                Role = dto.Role,
-                Status = dto.Status,
-                Address = dto.Address,
-                ImageUrl = dto.ImageUrl,
-                EmailVerifiedAt = dto.EmailVerifiedAt
             };
 
-            var created = await _repository.CreateAsync(user);
+            var rs = await _repository.UpdateUser(id, users);
 
-            return ToDto(created);
+            return rs == null
+                ? null
+                : toDto(rs);
         }
 
-        public async Task<UserDto?> UpdateAsync(int id, UpdateUserDto dto)
+        public async Task<bool> DeleteUser(int id)
         {
-            var user = new User
-            {
-                FullName = dto.FullName,
-                DateOfBirth = dto.DateOfBirth,
-                Gender = dto.Gender,
-                Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber,
-                PasswordHash = dto.PasswordHash,
-                Role = dto.Role,
-                Status = dto.Status,
-                Address = dto.Address,
-                ImageUrl = dto.ImageUrl,
-                EmailVerifiedAt = dto.EmailVerifiedAt
-            };
-
-            var updated = await _repository.UpdateAsync(id, user);
-
-            return updated == null ? null : ToDto(updated);
+            return await _repository.DeleteUser(id);
         }
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _repository.DeleteAsync(id);
-        }
+
+
+        
     }
 }

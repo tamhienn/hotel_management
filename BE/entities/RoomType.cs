@@ -1,7 +1,8 @@
+﻿using BE.entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BE.Entities
+namespace BE.entities
 {
     [Table("room_types")]
     public class RoomType
@@ -13,20 +14,23 @@ namespace BE.Entities
         [Column("name")]
         public string Name { get; set; } = string.Empty;
 
-        [Column("description")]
-        public string? Description { get; set; }
+        [Column("bed_count")]
+        public int BedCount { get; set; }
 
         [Column("capacity")]
         public int Capacity { get; set; }
 
-        [Column("base_price")]
-        public decimal BasePrice { get; set; }
+        [Column("area")]
+        public decimal Area { get; set; }
 
-        [Column("image_url")]
-        public string? ImageUrl { get; set; }
+        [Column("price")]
+        public decimal Price { get; set; }
 
-        [Column("status")]
-        public string Status { get; set; } = "active";
+        [Column("description")]
+        public string? Description { get; set; }
+
+        [Column("img_url")]
+        public string? ImgUrl { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
@@ -34,6 +38,7 @@ namespace BE.Entities
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
+        // Quan hệ RoomType 1 - N Room
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
     }
 }

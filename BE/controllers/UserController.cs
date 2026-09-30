@@ -1,11 +1,13 @@
-using BE.Dto;
-using BE.Services;
+using BE.dtos;
+using BE.dtos.Room;
+using BE.dtos.User;
+using BE.services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BE.Controllers
+namespace BE.controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[Controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -16,52 +18,52 @@ namespace BE.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetAllAsync()
+        public async Task<ActionResult<List<UserResponseDto>>> GetAllUser()
         {
-            return Ok(await _service.GetAllAsync());
+            var rs = await _service.GetAllUser();
+            return Ok(rs);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetByIdAsync(int id)
+        public async Task<ActionResult<UserResponseDto>> GetUserById(int id)
         {
-            var user = await _service.GetByIdAsync(id);
-
-            if (user == null)
+            var rs = await _service.GetUserById(id);
+            if(rs == null)
+            {
                 return NotFound();
-
-            return Ok(user);
+            }
+            return Ok(rs);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateAsync(CreateUserDto user)
+        public async Task<ActionResult<UserResponseDto>> CreateRoom(CreateUserDto user)
         {
-            var newUser = await _service.CreateAsync(user);
+            var rs = await _service.CreateUser(user);
 
-            return Ok(newUser);
+            return Ok(rs);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserDto>> UpdateAsync(
-            int id,
-            UpdateUserDto user)
+        public async Task<ActionResult<UserResponseDto>> UpdateUser(int id, UpdateUserDto user)
         {
-            var updatedUser = await _service.UpdateAsync(id, user);
+            var updateuser = await _service.UpdateUser(id, user);
 
-            if (updatedUser == null)
+            if (updateuser == null)
                 return NotFound();
 
-            return Ok(updatedUser);
+            return Ok(updateuser);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var deleted = await _service.DeleteAsync(id);
 
-            if (!deleted)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var deleteuser = await _service.DeleteUser(id);
+
+            if (!deleteuser)
                 return NotFound();
 
-            return NoContent();
+            return Ok(deleteuser);
         }
     }
 }

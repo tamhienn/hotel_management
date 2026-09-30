@@ -1,8 +1,8 @@
-using BE.Dto;
-using BE.Entities;
-using BE.Repositories;
+﻿using BE.dtos.Room;
+using BE.entities;
+using BE.repositories;
 
-namespace BE.Services
+namespace BE.services
 {
     public class RoomService : IRoomService
     {
@@ -13,69 +13,106 @@ namespace BE.Services
             _repository = repository;
         }
 
-        private static RoomDto ToDto(Room r) => new()
+
+        // ==========================================
+        // Chuyển Entity -> DTO
+        // Dùng lại cho nhiều hàm
+        // ==========================================
+
+        private static RoomResponseDto ToDto(Room room) => new()
         {
-            Id = r.Id,
-            RoomTypeId = r.RoomTypeId,
-            RoomNumber = r.RoomNumber,
-            Floor = r.Floor,
-            Status = r.Status,
-            Description = r.Description,
-            CreatedAt = r.CreatedAt,
-            UpdatedAt = r.UpdatedAt
+            RoomNumber = room.RoomNumber,
+            RoomTypeId = room.RoomTypeId,
+
+            Name = room.RoomType.Name,
+            BedCount = room.RoomType.BedCount,
+            Capacity = room.RoomType.Capacity,
+            Area = room.RoomType.Area,
+            Price = room.RoomType.Price,
+
+            Floor = room.Floor,
+            Status = room.Status,
+
+            CreatedAt = room.CreatedAt,
+            UpdatedAt = room.UpdatedAt
         };
 
-        public async Task<List<RoomDto>> GetAllAsync()
+
+        // ==========================================
+        // LẤY TẤT CẢ PHÒNG
+        // ==========================================
+
+        public async Task<List<RoomResponseDto>> GetAllRoom()
         {
-            var rooms = await _repository.GetAllAsync();
+            var rooms = await _repository.GetAllRoom();
 
             return rooms.Select(ToDto).ToList();
         }
 
-        public async Task<RoomDto?> GetByIdAsync(int id)
-        {
-            var room = await _repository.GetByIdAsync(id);
 
-            return room == null ? null : ToDto(room);
+        // ==========================================
+        // LẤY PHÒNG THEO ID
+        // ==========================================
+
+        public async Task<RoomResponseDto?> GetRoomById(int id)
+        {
+            var room = await _repository.GetRoomById(id);
+
+            return room == null
+                ? null
+                : ToDto(room);
         }
 
-        public async Task<RoomDto> CreateAsync(CreateRoomDto dto)
+
+        // ==========================================
+        // THÊM PHÒNG
+        // ==========================================
+
+        public async Task<RoomResponseDto> CreateRoom(CreateRoomDto dto)
+        {
+            var room = new Room
+            {
+                RoomNumber = dto.RoomNumber,
+                RoomTypeId = dto.RoomTypeId,
+                Floor = dto.Floor
+            };
+
+            var create = await _repository.CreateRoom(room);
+            return ToDto(create);
+        }
+
+
+        // ==========================================
+        // CẬP NHẬT PHÒNG
+        // ==========================================
+
+        public async Task<RoomResponseDto?> UpdateRoom(int id,UpdateRoomDto dto)
         {
             var room = new Room
             {
                 RoomTypeId = dto.RoomTypeId,
                 RoomNumber = dto.RoomNumber,
                 Floor = dto.Floor,
-                Status = dto.Status,
-                Description = dto.Description
+                Status = dto.Status
             };
 
-            var created = await _repository.CreateAsync(room);
+            var updated = await _repository.UpdateRoom(id, room);
 
-            return ToDto(created);
+            return updated == null
+                ? null
+                : ToDto(updated);
         }
 
-        public async Task<RoomDto?> UpdateAsync(
-            int id,
-            UpdateRoomDto dto)
+
+        // ==========================================
+        // XÓA PHÒNG
+        // ==========================================
+
+        public async Task<bool> DeleteRoom(int id)
         {
-            var room = new Room
-            {
-                RoomTypeId = dto.RoomTypeId,
-                RoomNumber = dto.RoomNumber,
-                Floor = dto.Floor,
-                Status = dto.Status,
-                Description = dto.Description
-            };
-
-            var updated = await _repository.UpdateAsync(id, room);
-
-            return updated == null ? null : ToDto(updated);
+            return await _repository.DeleteRoom(id);
         }
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _repository.DeleteAsync(id);
-        }
+       
     }
 }

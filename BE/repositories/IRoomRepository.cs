@@ -1,17 +1,16 @@
-using BE.Entities;
+using BE.entities;
 
-namespace BE.Repositories
+namespace BE.repositories
 {
     public interface IRoomRepository
     {
-        Task<List<Room>> GetAllAsync();
 
-        Task<Room?> GetByIdAsync(int id); 
+        Task<List<Room>> GetAllRoom();
+        Task<Room?> GetRoomById(int Id);
+        Task<Room> CreateRoom(Room room);
+        Task<Room?> UpdateRoom(int id, Room room);
+        Task<bool> DeleteRoom(int id);
 
-        Task<Room> CreateAsync(Room room);
-
-        Task<Room?> UpdateAsync(int id, Room room);
-
-        Task<bool> DeleteAsync(int id);
+    
     }
 }
