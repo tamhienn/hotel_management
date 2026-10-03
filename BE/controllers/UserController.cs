@@ -35,13 +35,6 @@ namespace BE.controllers
             return Ok(rs);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserResponseDto>> CreateRoom(CreateUserDto user)
-        {
-            var rs = await _service.CreateUser(user);
-
-            return Ok(rs);
-        }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<UserResponseDto>> UpdateUser(int id, UpdateUserDto user)

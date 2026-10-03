@@ -6,7 +6,7 @@ namespace BE.dtos.User
     {
         [Required]
         [MaxLength(50)]
-        public string Fullname { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(100)]
@@ -15,5 +15,9 @@ namespace BE.dtos.User
 
         [MaxLength(20)]
         public string? PhoneNumber { get; set; }
+
+        [MaxLength(500)]
+        public string? AvatarUrl { get; set; }
+
     }
 }

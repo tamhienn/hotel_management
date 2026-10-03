@@ -32,15 +32,6 @@ namespace BE.repositories
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<User> CreateUser(User user)
-        {
-            _dbcontext.Users.Add(user);
-            await _dbcontext.SaveChangesAsync();
-            return await _dbcontext.Users
-                .AsNoTracking()
-                .FirstAsync(r => r.Id == user.Id);
-            
-        }
 
         public async Task<User?> UpdateUser(int id, User user)
         {
@@ -51,10 +42,10 @@ namespace BE.repositories
             {
                 return null;
             }
-
-            existingUser.Fullname = user.Fullname;
+            existingUser.FullName = user.FullName;
             existingUser.Email = user.Email;
             existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.AvatarUrl = user.AvatarUrl;
             existingUser.UpdatedAt = DateTime.Now;
 
             await _dbcontext.SaveChangesAsync();
@@ -62,6 +53,22 @@ namespace BE.repositories
             return await _dbcontext.Users
                 .AsNoTracking()
                 .FirstAsync(r => r.Id == id);
+        }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            return await _dbcontext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Email == email);
+        }
+
+        public async Task<User> CreateAsync(User user)
+        {
+            _dbcontext.Users.Add(user);
+            await _dbcontext.SaveChangesAsync();
+            return await _dbcontext.Users
+                .AsNoTracking()
+                .FirstAsync(r => r.Id == user.Id);
         }
 
         public async Task<bool> DeleteUser(int id)

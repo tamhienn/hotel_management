@@ -1,9 +1,12 @@
 ﻿// builder.Service la noi dang ky va quan li cac dich vua cua ung dung
 
 using BE.configs;
+using BE.entities;
 using BE.repositories;
 using BE.Repositories;
 using BE.services;
+using BE.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 // ==================================================
@@ -43,6 +46,10 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 // Đăng ký Reposiitory & Service cho User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Đăng ký các dependency mà AuthService đang cần
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 // Tạo ứng dụng từ các cấu hình ở trên
 var app = builder.Build();

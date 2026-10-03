@@ -8,7 +8,9 @@ namespace BE.repositories
 
         public Task<User?> GetUserById(int id);
 
-        public Task<User> CreateUser(User user);
+        public Task<User?> GetByEmailAsync(string email);
+
+        public Task<User> CreateAsync(User user);
 
         public Task<User?> UpdateUser(int id, User user);
 

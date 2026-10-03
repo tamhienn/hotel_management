@@ -1,16 +1,18 @@
+﻿// dữ liệu Fe gửi lên khi đăng ký
+
 using System.ComponentModel.DataAnnotations;
 
-namespace BE.dtos.User
+namespace BE.dtos.Login
 {
-    public class CreateUserDto
+    public class RegisterDto
     {
         [Required]
-        [MaxLength(50)]
-        public string Fullname { get; set; } = string.Empty;
+        [MaxLength(100)]
+        public string FullName { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100)]
         [EmailAddress]
+        [MaxLength(100)]
         public string Email { get; set; } = string.Empty;
 
         [Required]

@@ -11,7 +11,7 @@ namespace BE.entities
         public int Id { get; set; }
 
         [Column("fullname")]
-        public string Fullname { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
 
         [Column("email")]
         public string Email { get; set; } = string.Empty;
@@ -21,6 +21,9 @@ namespace BE.entities
 
         [Column("phone_number")]
         public string? PhoneNumber { get; set; }
+        
+        [Column("avatar_url")]
+        public string? AvatarUrl { get; set; }
 
         [Column("role")]
         public string Role { get; set; } = string.Empty;

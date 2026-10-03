@@ -6,7 +6,6 @@ namespace BE.services
     {
         Task<List<UserResponseDto>> GetAllUser();
         Task<UserResponseDto?> GetUserById(int id);
-        Task<UserResponseDto> CreateUser(CreateUserDto user);
         Task<UserResponseDto?> UpdateUser(int id, UpdateUserDto room);
         Task<bool> DeleteUser(int id);
     }
